@@ -12,6 +12,9 @@ class Category(PublishedModel):
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
 
+    def __str__(self):
+        return self.title 
+
 
 class Topping(PublishedModel):
     title = models.CharField(max_length=256)
@@ -21,6 +24,9 @@ class Topping(PublishedModel):
         verbose_name = 'топпинги'
         verbose_name_plural = 'Топпинги'
 
+    def __str__(self):
+        return self.title 
+
 
 class Wrapper(PublishedModel):
     title = models.CharField(max_length=256, help_text='Уникальное название обёртки, не более 256 символов')
@@ -29,10 +35,18 @@ class Wrapper(PublishedModel):
         verbose_name = 'обёртки'
         verbose_name_plural = 'Обёртки'
 
+    def __str__(self):
+        return self.title 
+
 
 class IceCream(PublishedModel):
     title = models.CharField(max_length=256)
     description = models.TextField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    output_order = models.PositiveSmallIntegerField(
+        default=100,
+        verbose_name='Порядок отображения'
+    )
     wrapper = models.OneToOneField(
         Wrapper,
         on_delete=models.SET_NULL,
@@ -51,3 +65,8 @@ class IceCream(PublishedModel):
     class Meta:
         verbose_name = 'мороженое'
         verbose_name_plural = 'Мороженое'
+        ordering = ('output_order', 'title')
+   
+    def __str__(self):
+        return self.title
+
